@@ -20,4 +20,24 @@ public class CropService {
     public List<Crop> getAllCrops() {
         return cropRepository.findAll();
     }
+    public Crop getCropById(Long id) {
+    return cropRepository.findById(id).orElse(null);
+}
+public Crop updateCrop(Long id, Crop updatedCrop) {
+    Crop crop = cropRepository.findById(id).orElse(null);
+
+    if (crop != null) {
+        crop.setCropName(updatedCrop.getCropName());
+        crop.setQuantity(updatedCrop.getQuantity());
+        crop.setPrice(updatedCrop.getPrice());
+        crop.setFarmerName(updatedCrop.getFarmerName());
+
+        return cropRepository.save(crop);
+    }
+
+    return null;
+}
+public void deleteCrop(Long id) {
+    cropRepository.deleteById(id);
+}
 }

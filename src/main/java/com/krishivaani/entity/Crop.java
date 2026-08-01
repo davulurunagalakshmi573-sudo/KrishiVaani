@@ -1,28 +1,24 @@
 package com.krishivaani.entity;
-
+import jakarta.validation.constraints.*;
 import jakarta.persistence.*;
-
 @Entity
 @Table(name = "crops")
 public class Crop {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank(message = "Crop name is required")
     private String cropName;
-
+    @NotNull(message = "Quantity is required")
+    @Positive(message = "Quantity must be greater than 0")
     private Double quantity;
-
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be greater than 0")
     private Double price;
-
+    @NotBlank(message = "Farmer name is required")
     private String farmerName;
-
-    // Default Constructor
     public Crop() {
     }
-
-    // Parameterized Constructor
     public Crop(Long id, String cropName, Double quantity, Double price, String farmerName) {
         this.id = id;
         this.cropName = cropName;
@@ -30,8 +26,6 @@ public class Crop {
         this.price = price;
         this.farmerName = farmerName;
     }
-
-    // Getters and Setters
     public Long getId() {
         return id;
     }
