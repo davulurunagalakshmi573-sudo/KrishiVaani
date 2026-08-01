@@ -4,6 +4,9 @@ import com.krishivaani.entity.Crop;
 import com.krishivaani.repository.CropRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -42,5 +45,9 @@ public void deleteCrop(Long id) {
 }
 public List<Crop> getCropByName(String cropName) {
     return cropRepository.findByCropName(cropName);
+}
+public Page<Crop> getAllCrops(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return cropRepository.findAll(pageable);
 }
 }

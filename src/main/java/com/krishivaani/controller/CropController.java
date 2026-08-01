@@ -5,7 +5,7 @@ import com.krishivaani.service.CropService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
 import java.util.List;
 
 @RestController
@@ -21,9 +21,12 @@ public class CropController {
     }
 
     @GetMapping
-    public List<Crop> getAllCrops() {
-        return cropService.getAllCrops();
-    }
+    public Page<Crop> getAllCrops(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size) {
+
+    return cropService.getAllCrops(page, size);
+}
 
     @GetMapping("/{id}")
     public Crop getCropById(@PathVariable Long id) {
