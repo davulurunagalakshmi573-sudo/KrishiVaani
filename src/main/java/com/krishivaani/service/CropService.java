@@ -40,4 +40,7 @@ public Crop updateCrop(Long id, Crop updatedCrop) {
 public void deleteCrop(Long id) {
     cropRepository.deleteById(id);
 }
+public List<Crop> getCropByName(String cropName) {
+    return cropRepository.findByCropName(cropName);
+}
 }

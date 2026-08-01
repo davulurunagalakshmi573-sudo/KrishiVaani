@@ -41,4 +41,8 @@ public class CropController {
         cropService.deleteCrop(id);
         return "Crop deleted successfully!";
     }
+    @GetMapping("/search/{cropName}")
+    public List<Crop> searchCrop(@PathVariable String cropName) {
+        return cropService.getCropByName(cropName);
+}
 }
