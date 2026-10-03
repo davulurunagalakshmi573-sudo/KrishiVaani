@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KrishiVaani - Crops</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f8f3;
+            color: #333;
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 18px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            color: #1b5e20;
+            margin-bottom: 8px;
+        }
+
+        .title p {
+            color: #666;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .search {
+            padding: 12px;
+            width: 280px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #2e7d32;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #1b5e20;
+        }
+
+        .crop-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .crop-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .crop-icon {
+            font-size: 45px;
+        }
+
+        .crop-card h3 {
+            color: #2e7d32;
+            margin: 12px 0;
+        }
+
+        .crop-info {
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .price {
+            color: #1b5e20;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        footer {
+            margin-top: 50px;
+            background: #1b5e20;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">🌾 KrishiVaani</div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/crops.html">Crops</a>
+        <a href="/orders.html">Orders</a>
+        <a href="/prediction.html">Price Prediction</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="title">
+
+        <h1>Available Crops</h1>
+
+        <p>
+            Browse agricultural crops listed by farmers
+        </p>
+
+    </div>
+
+
+    <div class="actions">
+
+    <input
+        type="text"
+        id="searchInput"
+        class="search"
+        placeholder="Search crop..."
+    >
+
+    <div>
+        <button class="btn" onclick="loadCrops()">
+            🔄 Refresh Crops
+        </button>
+
+        <button class="btn" onclick="showAddCropForm()">
+            ➕ Add Crop
+        </button>
+    </div>
+
+</div>
+
+
+<div id="addCropForm"
+     style="
+        display:none;
+        background:white;
+        padding:25px;
+        border-radius:10px;
+        box-shadow:0 3px 12px rgba(0,0,0,0.08);
+        margin-bottom:30px;
+     ">
+
+    <h2 style="color:#1b5e20; margin-bottom:20px;">
+        Add New Crop
+    </h2>
+
+    <form id="cropForm">
+
+        <div style="margin-bottom:15px;">
+
+            <label>Crop Name</label>
+
+            <input
+                type="text"
+                id="cropName"
+                required
+                placeholder="Example: Wheat"
+                style="width:100%; padding:12px; margin-top:6px;"
+            >
+
+        </div>
+
+
+        <div style="margin-bottom:15px;">
+
+            <label>Quantity</label>
+
+            <input
+                type="number"
+                id="quantity"
+                required
+                min="0.01"
+                step="0.01"
+                placeholder="Example: 100"
+                style="width:100%; padding:12px; margin-top:6px;"
+            >
+
+        </div>
+
+
+        <div style="margin-bottom:15px;">
+
+            <label>Price</label>
+
+            <input
+                type="number"
+                id="price"
+                required
+                min="0.01"
+                step="0.01"
+                placeholder="Example: 3200"
+                style="width:100%; padding:12px; margin-top:6px;"
+            >
+
+        </div>
+
+
+        <div style="margin-bottom:20px;">
+
+            <label>Farmer Name</label>
+
+            <input
+                type="text"
+                id="farmerName"
+                required
+                placeholder="Example: Ravi Kumar"
+                style="width:100%; padding:12px; margin-top:6px;"
+            >
+
+        </div>
+
+
+        <button type="submit" class="btn">
+            Add Crop
+        </button>
+
+        <button
+            type="button"
+            class="btn"
+            onclick="hideAddCropForm()"
+            style="background:#777;"
+        >
+            Cancel
+        </button>
+
+    </form>
+
+    <p id="formMessage" style="margin-top:15px;"></p>
+
+</div>
+
+
+    <div id="cropContainer" class="crop-container">
+
+        <p>Loading crops...</p>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    © 2026 KrishiVaani | Agricultural Crop Trading Platform
+
+</footer>
+
+
+<script>
+
+    const API_URL = "/api/crops";
+
+
+    function loadCrops() {
+
+        fetch(API_URL)
+
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error("Failed to load crops");
+                }
+
+                return response.json();
+
+            })
+
+            .then(data => {
+
+                displayCrops(data);
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+                document.getElementById("cropContainer").innerHTML =
+                    "<p>Unable to load crops. Make sure Spring Boot is running.</p>";
+
+            });
+
+    }
+
+
+    function displayCrops(data) {
+
+        const container =
+            document.getElementById("cropContainer");
+
+        container.innerHTML = "";
+
+
+        /*
+         * Your Spring Boot API returns a Page object.
+         * Therefore the actual crop records are inside data.content.
+         */
+
+        const crops = data.content || data;
+
+
+        if (crops.length === 0) {
+
+            container.innerHTML =
+                "<p>No crops available.</p>";
+
+            return;
+
+        }
+
+
+        crops.forEach(crop => {
+
+            const card = document.createElement("div");
+
+            card.className = "crop-card";
+
+
+            card.innerHTML = `
+
+                <div class="crop-icon">🌾</div>
+
+                <h3>${crop.cropName}</h3>
+
+                <div class="crop-info">
+
+                    <div>
+                        👨‍🌾 Farmer:
+                        <strong>${crop.farmerName}</strong>
+                    </div>
+
+                    <div>
+                        📦 Quantity:
+                        <strong>${crop.quantity}</strong>
+                    </div>
+
+                    <div class="price">
+                        ₹${crop.price}
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(card);
+
+        });
+
+    }
+
+
+    document
+        .getElementById("searchInput")
+        .addEventListener("input", function() {
+
+            const searchText =
+                this.value.toLowerCase();
+
+            const cards =
+                document.querySelectorAll(".crop-card");
+
+
+            cards.forEach(card => {
+
+                const cropName =
+                    card.querySelector("h3")
+                        .textContent
+                        .toLowerCase();
+
+                if (cropName.includes(searchText)) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        });
+
+
+    loadCrops();
+    function showAddCropForm() {
+
+    document.getElementById("addCropForm").style.display = "block";
+
+}
+
+
+function hideAddCropForm() {
+
+    document.getElementById("addCropForm").style.display = "none";
+
+    document.getElementById("cropForm").reset();
+
+    document.getElementById("formMessage").textContent = "";
+
+}
+
+
+document
+    .getElementById("cropForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const crop = {
+
+            cropName:
+                document.getElementById("cropName").value,
+
+            quantity:
+                parseFloat(
+                    document.getElementById("quantity").value
+                ),
+
+            price:
+                parseFloat(
+                    document.getElementById("price").value
+                ),
+
+            farmerName:
+                document.getElementById("farmerName").value
+
+        };
+
+
+        fetch("/api/crops", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(crop)
+
+        })
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.json().then(error => {
+
+                    throw new Error(
+                        Object.values(error).join(", ")
+                    );
+
+                });
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            document.getElementById("formMessage").textContent =
+                "✅ Crop added successfully!";
+
+            document.getElementById("formMessage").style.color =
+                "green";
+
+
+            document.getElementById("cropForm").reset();
+
+
+            setTimeout(() => {
+
+                hideAddCropForm();
+
+                loadCrops();
+
+            }, 1000);
+
+        })
+
+        .catch(error => {
+
+            document.getElementById("formMessage").textContent =
+                "❌ " + error.message;
+
+            document.getElementById("formMessage").style.color =
+                "red";
+
+        });
+
+    });
+
+</script>
+
+</body>
+
+</html>

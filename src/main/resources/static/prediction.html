@@ -1,0 +1,538 @@
+```html
+<!DOCTYPE html>
+git rebase --show-current-patch<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KrishiVaani - Price Prediction</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            margin: 0;
+            background: #f5f8f3;
+            color: #333;
+        }
+
+
+        header {
+            background: #2e7d32;
+            color: white;
+
+            padding: 18px 60px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+
+        nav a {
+            color: white;
+            text-decoration: none;
+
+            margin-left: 25px;
+        }
+
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+
+            margin: 45px auto;
+        }
+
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+
+        .title h1 {
+            color: #1b5e20;
+        }
+
+
+        .title p {
+            color: #666;
+        }
+
+
+        .prediction-card {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 15px rgba(0,0,0,0.08);
+        }
+
+
+        .prediction-card h2 {
+            color: #1b5e20;
+
+            margin-top: 0;
+        }
+
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+
+        select,
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 6px;
+
+            font-size: 15px;
+        }
+
+
+        .predict-btn {
+
+            width: 100%;
+
+            padding: 14px;
+
+            background: #2e7d32;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .predict-btn:hover {
+            background: #1b5e20;
+        }
+
+
+        .result {
+
+            display: none;
+
+            margin-top: 30px;
+
+            padding: 25px;
+
+            background: #e8f5e9;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            border: 1px solid #a5d6a7;
+        }
+
+
+        .result h3 {
+            color: #1b5e20;
+        }
+
+
+        .predicted-price {
+
+            font-size: 36px;
+
+            font-weight: bold;
+
+            color: #2e7d32;
+
+            margin: 15px 0;
+        }
+
+
+        .model-info {
+
+            color: #666;
+
+            font-size: 14px;
+        }
+
+
+        footer {
+
+            margin-top: 60px;
+
+            background: #1b5e20;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🌾 KrishiVaani
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/crops.html">
+            Crops
+        </a>
+
+        <a href="/orders.html">
+            Orders
+        </a>
+
+        <a href="/prediction.html">
+            Price Prediction
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <div class="title">
+
+        <h1>
+            📈 Agricultural Price Prediction
+        </h1>
+
+        <p>
+            Predict the expected modal price of an agricultural crop
+        </p>
+
+    </div>
+
+
+
+    <div class="prediction-card">
+
+
+        <h2>
+            Enter Crop Information
+        </h2>
+
+
+        <div class="form-group">
+
+            <label>
+                Commodity
+            </label>
+
+            <select id="commodity">
+
+                <option value="Potato">
+                    Potato
+                </option>
+
+                <option value="Onion">
+                    Onion
+                </option>
+
+                <option value="Wheat">
+                    Wheat
+                </option>
+
+                <option value="Tomato">
+                    Tomato
+                </option>
+
+                <option value="Rice">
+                    Rice
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                State
+            </label>
+
+            <input
+                type="text"
+                id="state"
+                placeholder="Example: Andhra Pradesh"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Market Name
+            </label>
+
+            <input
+                type="text"
+                id="market"
+                placeholder="Example: Vijayawada"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Previous Modal Price (₹)
+            </label>
+
+            <input
+                type="number"
+                id="previousPrice"
+                placeholder="Example: 2200"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                7-Day Average Price (₹)
+            </label>
+
+            <input
+                type="number"
+                id="rolling7"
+                placeholder="Example: 2150"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                30-Day Average Price (₹)
+            </label>
+
+            <input
+                type="number"
+                id="rolling30"
+                placeholder="Example: 2100"
+            >
+
+        </div>
+
+
+
+        <button
+            class="predict-btn"
+            onclick="predictPrice()"
+        >
+
+            🔮 Predict Price
+
+        </button>
+
+
+
+        <div
+            id="result"
+            class="result"
+        >
+
+            <h3>
+                Predicted Modal Price
+            </h3>
+
+
+            <div
+                id="predictedPrice"
+                class="predicted-price"
+            >
+                ₹0
+            </div>
+
+
+            <div class="model-info">
+
+                🤖 Model:
+                XGBoost Regressor
+
+                <br>
+
+                Historical price features used
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<footer>
+
+    © 2026 KrishiVaani |
+    Agricultural Crop Trading Platform
+
+</footer>
+
+
+
+<script>
+
+
+function predictPrice() {
+
+    /*
+     * Temporary demonstration prediction.
+     *
+     * We will replace this section with
+     * the actual XGBoost API connection
+     * after the interface is working.
+     */
+
+
+    const previous =
+        parseFloat(
+            document.getElementById(
+                "previousPrice"
+            ).value
+        );
+
+
+    const rolling7 =
+        parseFloat(
+            document.getElementById(
+                "rolling7"
+            ).value
+        );
+
+
+    const rolling30 =
+        parseFloat(
+            document.getElementById(
+                "rolling30"
+            ).value
+        );
+
+
+    if (
+        isNaN(previous) ||
+        isNaN(rolling7) ||
+        isNaN(rolling30)
+    ) {
+
+        alert(
+            "Please enter all price values."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Temporary value only.
+     * This is NOT the ML prediction.
+     */
+
+    const predicted =
+        (
+            previous * 0.5 +
+            rolling7 * 0.3 +
+            rolling30 * 0.2
+        );
+
+
+    document.getElementById(
+        "predictedPrice"
+    ).textContent =
+        "₹" + predicted.toFixed(2);
+
+
+    document.getElementById(
+        "result"
+    ).style.display = "block";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
+```

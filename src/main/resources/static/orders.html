@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KrishiVaani - Orders</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f8f3;
+            color: #333;
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 18px 60px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            color: #1b5e20;
+        }
+
+        .title p {
+            color: #666;
+        }
+
+        .order-form {
+            background: white;
+            padding: 25px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.08);
+
+            margin-bottom: 35px;
+        }
+
+        .order-form h2 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+
+            border: none;
+            border-radius: 6px;
+
+            background: #2e7d32;
+            color: white;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #1b5e20;
+        }
+
+        .refresh-btn {
+            float: right;
+        }
+
+        .orders-container {
+            background: white;
+
+            border-radius: 10px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: #2e7d32;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f1f8f2;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 50px;
+
+            background: #1b5e20;
+            color: white;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🌾 KrishiVaani
+    </div>
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/crops.html">
+            Crops
+        </a>
+
+        <a href="/orders.html">
+            Orders
+        </a>
+
+        <a href="/prediction.html">
+            Price Prediction
+        </a>
+
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="title">
+
+        <h1>Order Management</h1>
+
+        <p>
+            Buyers can place and manage crop orders
+        </p>
+
+    </div>
+
+
+
+    <!-- CREATE ORDER -->
+
+    <div class="order-form">
+
+        <h2>
+            📦 Place New Order
+        </h2>
+
+
+        <form id="orderForm">
+
+
+            <div class="form-group">
+
+                <label>
+                    Crop ID
+                </label>
+
+                <input
+                    type="number"
+                    id="cropId"
+                    placeholder="Example: 3"
+                    required
+                    min="1"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label>
+                    Buyer Name
+                </label>
+
+                <input
+                    type="text"
+                    id="buyerName"
+                    placeholder="Example: Anil Kumar"
+                    required
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label>
+                    Quantity
+                </label>
+
+                <input
+                    type="number"
+                    id="orderQuantity"
+                    placeholder="Example: 20"
+                    required
+                    min="0.01"
+                    step="0.01"
+                >
+
+            </div>
+
+
+
+            <button
+                type="submit"
+                class="btn"
+            >
+                Place Order
+            </button>
+
+
+            <div id="message"></div>
+
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ORDERS -->
+
+    <div class="orders-container">
+
+        <button
+            class="btn refresh-btn"
+            onclick="loadOrders()"
+        >
+            🔄 Refresh
+        </button>
+
+
+        <h2>
+            📋 Existing Orders
+        </h2>
+
+
+        <div id="ordersTable">
+
+            Loading orders...
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<footer>
+
+    © 2026 KrishiVaani |
+    Agricultural Crop Trading Platform
+
+</footer>
+
+
+
+<script>
+
+
+    const ORDER_API =
+        "/api/orders";
+
+
+
+    // LOAD ORDERS
+
+    function loadOrders() {
+
+
+        fetch(ORDER_API)
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to load orders"
+                    );
+
+                }
+
+                return response.json();
+
+            })
+
+            .then(data => {
+
+                displayOrders(data);
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+                document.getElementById(
+                    "ordersTable"
+                ).innerHTML =
+                    "<p>Unable to load orders. Make sure Spring Boot is running.</p>";
+
+            });
+
+    }
+
+
+
+    // DISPLAY ORDERS
+
+    function displayOrders(data) {
+
+
+        const container =
+            document.getElementById(
+                "ordersTable"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const orders =
+            data.content || data;
+
+
+        if (!orders || orders.length === 0) {
+
+            container.innerHTML =
+                "<p>No orders available.</p>";
+
+            return;
+
+        }
+
+
+
+        const table =
+            document.createElement("table");
+
+
+        table.innerHTML = `
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Crop ID</th>
+
+                    <th>Buyer</th>
+
+                    <th>Quantity</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody></tbody>
+
+        `;
+
+
+
+        const tbody =
+            table.querySelector("tbody");
+
+
+
+        orders.forEach(order => {
+
+
+            const row =
+                document.createElement("tr");
+
+
+            let statusClass =
+                "pending";
+
+
+            if (
+                order.status &&
+                order.status.toUpperCase()
+                    === "CONFIRMED"
+            ) {
+
+                statusClass =
+                    "confirmed";
+
+            }
+
+
+            if (
+                order.status &&
+                order.status.toUpperCase()
+                    === "CANCELLED"
+            ) {
+
+                statusClass =
+                    "cancelled";
+
+            }
+
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${order.id}
+                </td>
+
+                <td>
+                    ${order.cropId}
+                </td>
+
+                <td>
+                    ${order.buyerName}
+                </td>
+
+                <td>
+                    ${order.quantity}
+                </td>
+
+                <td>
+
+                    <span class="status ${statusClass}">
+                        ${order.status}
+                    </span>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(row);
+
+        });
+
+
+
+        container.appendChild(table);
+
+    }
+
+
+
+    // PLACE ORDER
+
+    document
+        .getElementById("orderForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+
+                event.preventDefault();
+
+
+
+                const order = {
+
+                    cropId:
+                        parseInt(
+                            document.getElementById(
+                                "cropId"
+                            ).value
+                        ),
+
+                    buyerName:
+                        document.getElementById(
+                            "buyerName"
+                        ).value,
+
+                    quantity:
+                        parseFloat(
+                            document.getElementById(
+                                "orderQuantity"
+                            ).value
+                        )
+
+                };
+
+
+
+                fetch(
+                    ORDER_API,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(order)
+
+                    }
+
+                )
+
+                .then(response => {
+
+
+                    if (!response.ok) {
+
+                        return response
+                            .json()
+                            .then(error => {
+
+                                throw new Error(
+                                    Object.values(error)
+                                        .join(", ")
+                                );
+
+                            });
+
+                    }
+
+
+                    return response.json();
+
+                })
+
+
+                .then(data => {
+
+
+                    document.getElementById(
+                        "message"
+                    ).textContent =
+                        "✅ Order placed successfully!";
+
+
+                    document.getElementById(
+                        "message"
+                    ).style.color =
+                        "green";
+
+
+                    document.getElementById(
+                        "orderForm"
+                    ).reset();
+
+
+                    loadOrders();
+
+                })
+
+
+                .catch(error => {
+
+
+                    document.getElementById(
+                        "message"
+                    ).textContent =
+                        "❌ " + error.message;
+
+
+                    document.getElementById(
+                        "message"
+                    ).style.color =
+                        "red";
+
+                });
+
+
+            }
+        );
+
+
+
+    // INITIAL LOAD
+
+    loadOrders();
+
+
+</script>
+
+
+</body>
+
+</html>
